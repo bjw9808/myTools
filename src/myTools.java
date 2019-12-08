@@ -18,6 +18,7 @@ public class myTools extends JFrame {
     private JPanel jpanel;
     private JTextField jText1, jText2;
     private JLabel jLabelIn, jLabelOut;
+    String iconPath = "C:\\Users\\bjw98\\OneDrive\\My_java\\myTools\\res\\Tools.png";
 
     public myTools() {
         Font myFont=new Font("微软雅黑",Font.BOLD,13);
@@ -26,11 +27,13 @@ public class myTools extends JFrame {
         jpanel.setLayout(new FlowLayout(FlowLayout.LEADING, 20, 5));
         add(jpanel);
 
+        ImageIcon softwareIcon = new ImageIcon(iconPath);
+
         jLabelIn = new JLabel("输入:");
         jLabelOut = new JLabel("输出:");
 
-        jText1 = new JTextField("", 80);
-        jText2 = new JTextField("", 80);
+        jText1 = new JTextField("", 65);
+        jText2 = new JTextField("", 65);
 
         jButton1 = new JButton("时间戳(ms)");
         jButton2 = new JButton("时间戳(s)");
@@ -96,6 +99,7 @@ public class myTools extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        setIconImage(softwareIcon.getImage());
     }
 
     class actionTimeStampMs implements ActionListener {
