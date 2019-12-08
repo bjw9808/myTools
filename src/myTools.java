@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLDecoder;
@@ -12,7 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 
 public class myTools extends JFrame {
-    private JButton jButton1, jButton2, jButtonBase64En, jButtonBase64De, jButtonMD5, jButtonUrlEn, jButtonUrlDe;
+    private JButton jButton1, jButton2, jButtonBase64En, jButtonBase64De, jButtonMD5, jButtonUrlEn, jButtonUrlDe,
+            jButtonFileMD5;
     private JPanel jpanel;
     private JTextField jText1, jText2;
     private JLabel jLabelIn, jLabelOut;
@@ -41,6 +43,8 @@ public class myTools extends JFrame {
         jButtonUrlEn = new JButton("url编码");
         jButtonUrlDe = new JButton("url解码");
 
+        jButtonFileMD5 = new JButton("文件MD5计算");
+
         jButton1.addActionListener(new actionTimeStampMs());
         jButton2.addActionListener(new actionTimeStampS());
 
@@ -51,6 +55,8 @@ public class myTools extends JFrame {
         jButtonUrlDe.addActionListener(new actionURLDecode());
 
         jButtonMD5.addActionListener(new actionMD5encode());
+
+        jButtonFileMD5.addActionListener(new actionFileMD5());
 
         //统一设置字体
         jLabelOut.setFont(myFont);
@@ -82,6 +88,7 @@ public class myTools extends JFrame {
         jpanel.add(jButtonUrlEn);
         jpanel.add(jButtonUrlDe);
 
+        jpanel.add(jButtonFileMD5);
 
         setTitle("小工具合集_by_imBobby");
         setSize(950, 400);
@@ -221,6 +228,41 @@ public class myTools extends JFrame {
         }
     }
 
+    class actionFileMD5 implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser jFileChoose = new JFileChooser("C:\\");
+            int fileChooseResult = jFileChoose.showOpenDialog(null);
+            if(fileChooseResult == jFileChoose.APPROVE_OPTION)
+            {
+                String fileName = jFileChoose.getSelectedFile().toString();
+                MessageDigest digest = null;
+                FileInputStream in = null;
+                byte buffer[] = new byte[1024];
+                int len;
+                try
+                {
+                    digest = MessageDigest.getInstance("MD5");
+                    in = new FileInputStream(fileName);
+                    while ((len = in.read(buffer, 0, 1024)) != -1)
+                    {
+                        digest.update(buffer, 0, len);
+                    }
+                    in.close();
+                }
+                catch (Exception error)
+                {
+                    JOptionPane.showMessageDialog(jpanel,"文件MD5计算出错","警告",2);
+                }
+                BigInteger bigInt = new BigInteger(1, digest.digest());
+                String finalMD5 = bigInt.toString(16);
+                jText2.setText(finalMD5);
+            }
+            else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
+                JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告",2);
+            }
+        }
+    }
     public static void main(String[] args) {
         new myTools();
     }
