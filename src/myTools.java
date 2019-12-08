@@ -231,36 +231,38 @@ public class myTools extends JFrame {
     class actionFileMD5 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JFileChooser jFileChoose = new JFileChooser("C:\\");
-            int fileChooseResult = jFileChoose.showOpenDialog(null);
-            if(fileChooseResult == jFileChoose.APPROVE_OPTION)
-            {
-                String fileName = jFileChoose.getSelectedFile().toString();
-                MessageDigest digest = null;
-                FileInputStream in = null;
-                byte buffer[] = new byte[1024];
-                int len;
-                try
+            new Thread(() -> {
+                JFileChooser jFileChoose = new JFileChooser("C:\\");
+                int fileChooseResult = jFileChoose.showOpenDialog(null);
+                if(fileChooseResult == jFileChoose.APPROVE_OPTION)
                 {
-                    digest = MessageDigest.getInstance("MD5");
-                    in = new FileInputStream(fileName);
-                    while ((len = in.read(buffer, 0, 1024)) != -1)
+                    String fileName = jFileChoose.getSelectedFile().toString();
+                    MessageDigest digest = null;
+                    FileInputStream in = null;
+                    byte buffer[] = new byte[1024];
+                    int len;
+                    try
                     {
-                        digest.update(buffer, 0, len);
+                        digest = MessageDigest.getInstance("MD5");
+                        in = new FileInputStream(fileName);
+                        while ((len = in.read(buffer, 0, 1024)) != -1)
+                        {
+                            digest.update(buffer, 0, len);
+                        }
+                        in.close();
                     }
-                    in.close();
+                    catch (Exception error)
+                    {
+                        JOptionPane.showMessageDialog(jpanel,"文件MD5计算出错","警告",2);
+                    }
+                    BigInteger bigInt = new BigInteger(1, digest.digest());
+                    String finalMD5 = bigInt.toString(16);
+                    jText2.setText(finalMD5);
                 }
-                catch (Exception error)
-                {
-                    JOptionPane.showMessageDialog(jpanel,"文件MD5计算出错","警告",2);
+                else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
+                    JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告",2);
                 }
-                BigInteger bigInt = new BigInteger(1, digest.digest());
-                String finalMD5 = bigInt.toString(16);
-                jText2.setText(finalMD5);
-            }
-            else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
-                JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告",2);
-            }
+            }).start();
         }
     }
     public static void main(String[] args) {
