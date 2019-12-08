@@ -1,4 +1,7 @@
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -8,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 
 public class myTools extends JFrame {
-    private JButton jb_1, jb_2, jb_base_64_en, jb_base_64_de, jb_MD5;
+    private JButton jb_1, jb_2, jb_base_64_en, jb_base_64_de, jb_MD5, jb_url_encode, jb_url_decode;
     private JPanel jpanel;
     private JTextField jtext_1, jtext_2;
 
@@ -16,26 +19,45 @@ public class myTools extends JFrame {
         jpanel = new JPanel();
         jtext_1 = new JTextField("输入", 80);
         jtext_2 = new JTextField("输出", 80);
+
         jb_1 = new JButton("时间戳(ms)");
         jb_2 = new JButton("时间戳(s)");
+
         jb_base_64_en = new JButton("base64加密");
         jb_base_64_de = new JButton("base64解密");
+
         jb_MD5 = new JButton("MD5");
+
+        jb_url_encode = new JButton("url编码");
+        jb_url_decode = new JButton("url解码");
+
         jb_1.addActionListener(new actionTimeStampMs());
         jb_2.addActionListener(new actionTimeStampS());
+
         jb_base_64_en.addActionListener(new actionBase64Encode());
         jb_base_64_de.addActionListener(new actionBase64Decode());
+
+        jb_url_encode.addActionListener(new actionURLEncode());
+        jb_url_decode.addActionListener(new actionURLDecode());
+
         jb_MD5.addActionListener(new actionMD5encode());
-//        jpanel.setLayout(new GridLayout(4,4,5,5));
+
         jpanel.add(jtext_1);
         jpanel.add(jtext_2);
+
         jpanel.add(jb_1);
         jpanel.add(jb_2);
+
         jpanel.add(jb_base_64_en);
         jpanel.add(jb_base_64_de);
+
         jpanel.add(jb_MD5);
+
+        jpanel.add(jb_url_encode);
+        jpanel.add(jb_url_decode);
+
         add(jpanel);
-        setTitle("研发小工具_imBobby");
+        setTitle("研发小工具imBobby");
         setSize(1000, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -103,6 +125,30 @@ public class myTools extends JFrame {
             }
             catch (Exception exception) {
                 System.out.println(exception);
+            }
+        }
+    }
+
+    class actionURLEncode implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String url = jtext_1.getText();
+            try {
+                url = URLEncoder.encode(url, "utf-8");
+            } catch (UnsupportedEncodingException ex) {
+                ex.printStackTrace();
+            }
+            jtext_2.setText(url);
+        }
+    }
+
+    class actionURLDecode implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String url_encode = jtext_1.getText();
+            try {
+                jtext_2.setText(URLDecoder.decode(url_encode, "UTF-8"));
+            } catch (UnsupportedEncodingException ex) {
+                ex.printStackTrace();
             }
         }
     }
