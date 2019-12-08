@@ -99,8 +99,14 @@ public class myTools extends JFrame {
             else {
                 String inputTimeStamp = jtext_1.getText();
                 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String sd = sdf.format(new Date(Long.parseLong(String.valueOf(inputTimeStamp))));
-                jtext_2.setText(sd);
+                try {
+                    String sd = sdf.format(new Date(Long.parseLong(String.valueOf(inputTimeStamp))));
+                    jtext_2.setText(sd);
+                }
+                catch (NumberFormatException error) {
+                    JOptionPane.showMessageDialog(jpanel,"输入时间戳错误，请检查","警告",2);
+                    jtext_1.setText("");
+                }
             }
         }
     }
@@ -112,10 +118,16 @@ public class myTools extends JFrame {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
             }
             else {
-                long inputTimeStamp = Long.parseLong(jtext_1.getText());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String sd = sdf.format(new Date(Long.parseLong(String.valueOf(inputTimeStamp * 1000))));
-                jtext_2.setText(sd);
+                try {
+                    long inputTimeStamp = Long.parseLong(jtext_1.getText());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String sd = sdf.format(new Date(Long.parseLong(String.valueOf(inputTimeStamp * 1000))));
+                    jtext_2.setText(sd);
+                }
+                catch (Exception error) {
+                    JOptionPane.showMessageDialog(jpanel,"输入时间戳错误，请检查","警告",2);
+                    jtext_1.setText("");
+                }
             }
         }
     }
