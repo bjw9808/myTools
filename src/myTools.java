@@ -20,7 +20,7 @@ public class myTools extends JFrame {
     private JLabel jLabelIn, jLabelOut;
 
     public myTools() {
-        Font myFont=new Font("微软雅黑",Font.BOLD,14);
+        Font myFont=new Font("微软雅黑",Font.BOLD,13);
         //JPanel init
         jpanel = new JPanel();
         jpanel.setLayout(new FlowLayout(FlowLayout.LEADING, 20, 5));
@@ -70,6 +70,7 @@ public class myTools extends JFrame {
         jButtonBase64De.setFont(myFont);
         jButtonBase64En.setFont(myFont);
         jButtonMD5.setFont(myFont);
+        jButtonFileMD5.setFont(myFont);
 
         jpanel.add(jLabelIn);
         jpanel.add(jText1);
