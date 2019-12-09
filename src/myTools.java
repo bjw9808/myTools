@@ -116,7 +116,7 @@ public class myTools extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (jText1.getText().equals("")) {
-                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
             else {
                 String inputTimeStamp = jText1.getText();
@@ -126,7 +126,7 @@ public class myTools extends JFrame {
                     jText2.setText(sd);
                 }
                 catch (NumberFormatException error) {
-                    JOptionPane.showMessageDialog(jpanel,"输入时间戳错误，请检查","警告",2);
+                    JOptionPane.showMessageDialog(jpanel,"输入时间戳错误，请检查","警告", JOptionPane.WARNING_MESSAGE);
                     jText1.setText("");
                 }
             }
@@ -137,7 +137,7 @@ public class myTools extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (jText1.getText().equals("")) {
-                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
             else {
                 try {
@@ -147,7 +147,7 @@ public class myTools extends JFrame {
                     jText2.setText(sd);
                 }
                 catch (Exception error) {
-                    JOptionPane.showMessageDialog(jpanel,"输入时间戳错误，请检查","警告",2);
+                    JOptionPane.showMessageDialog(jpanel,"输入时间戳错误，请检查","警告", JOptionPane.WARNING_MESSAGE);
                     jText1.setText("");
                 }
             }
@@ -158,7 +158,7 @@ public class myTools extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (jText1.getText().equals("")) {
-                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
             else {
                 byte[] inputString = jText1.getText().getBytes();
@@ -172,7 +172,7 @@ public class myTools extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (jText1.getText().equals("")) {
-                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
             else {
                 try {
@@ -180,7 +180,8 @@ public class myTools extends JFrame {
                     jText2.setText(new String(base64decodedBytes));
                 }
                 catch (IllegalArgumentException error) {
-                    JOptionPane.showMessageDialog(jpanel,"输入了不合法的字符串","解码失败",2);
+                    JOptionPane.showMessageDialog(jpanel,"输入了不合法的字符串","解码失败", JOptionPane.WARNING_MESSAGE);
+                    jText1.setText("");
                 }
 
             }
@@ -210,7 +211,7 @@ public class myTools extends JFrame {
                 jText2.setText(buf.toString());
             }
             catch (Exception exception) {
-                JOptionPane.showMessageDialog(jpanel,"异常信息" + exception,"MD5异常",2);
+                JOptionPane.showMessageDialog(jpanel,"异常信息" + exception,"MD5异常", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -218,14 +219,14 @@ public class myTools extends JFrame {
     class actionURLEncode implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (jText1.getText().equals("")) {
-                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
             else {
                 String url = jText1.getText();
                 try {
                     url = URLEncoder.encode(url, "utf-8");
                 } catch (UnsupportedEncodingException ex) {
-                    JOptionPane.showMessageDialog(jpanel,"编码失败","警告",2);
+                    JOptionPane.showMessageDialog(jpanel,"编码失败","警告", JOptionPane.WARNING_MESSAGE);
                 }
                 jText2.setText(url);
             }
@@ -236,17 +237,17 @@ public class myTools extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (jText1.getText().equals("")) {
-                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
             else {
                 String url_encode = jText1.getText();
                 try {
                     jText2.setText(URLDecoder.decode(url_encode, "UTF-8"));
                 } catch (UnsupportedEncodingException ex) {
-                    JOptionPane.showMessageDialog(jpanel,"解码失败","警告",2);
+                    JOptionPane.showMessageDialog(jpanel,"解码失败","警告", JOptionPane.WARNING_MESSAGE);
                     jText2.setText("");
                 } catch (IllegalArgumentException error) {
-                    JOptionPane.showMessageDialog(jpanel,"解码失败(非法输入)","警告",2);
+                    JOptionPane.showMessageDialog(jpanel,"解码失败(非法输入)","警告", JOptionPane.WARNING_MESSAGE);
                     jText2.setText("");
                 }
             }
@@ -259,7 +260,7 @@ public class myTools extends JFrame {
             new Thread(() -> {
                 JFileChooser jFileChoose = new JFileChooser("C:\\");
                 int fileChooseResult = jFileChoose.showOpenDialog(null);
-                if(fileChooseResult == jFileChoose.APPROVE_OPTION)
+                if(fileChooseResult == JFileChooser.APPROVE_OPTION)
                 {
                     String fileName = jFileChoose.getSelectedFile().toString();
                     MessageDigest digest = null;
@@ -278,14 +279,14 @@ public class myTools extends JFrame {
                     }
                     catch (Exception error)
                     {
-                        JOptionPane.showMessageDialog(jpanel,"文件MD5计算出错","警告",2);
+                        JOptionPane.showMessageDialog(jpanel,"文件MD5计算出错","警告", JOptionPane.WARNING_MESSAGE);
                     }
                     BigInteger bigInt = new BigInteger(1, digest.digest());
                     String finalMD5 = bigInt.toString(16);
                     jText2.setText(finalMD5);
                 }
                 else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
-                    JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告",2);
+                    JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告", JOptionPane.WARNING_MESSAGE);
                 }
             }).start();
         }
@@ -307,7 +308,7 @@ public class myTools extends JFrame {
                 else {
                     int psdByte = Integer.parseInt(jText1.getText());
                     if (psdByte > 10000000) {
-                        JOptionPane.showMessageDialog(jpanel,"长度过长，可能生成速度较慢","提示",2);
+                        JOptionPane.showMessageDialog(jpanel,"长度过长，可能生成速度较慢","提示", JOptionPane.WARNING_MESSAGE);
                     }
                     StringBuilder newPsdNum = new StringBuilder(psdByte);
                     for (int i = 0; i < psdByte; i ++) {
@@ -317,7 +318,7 @@ public class myTools extends JFrame {
                 }
             }
             catch (NumberFormatException error) {
-                JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告", JOptionPane.WARNING_MESSAGE);
             }
 
         }
@@ -340,7 +341,7 @@ public class myTools extends JFrame {
                 else {
                     int psdByte = Integer.parseInt(jText1.getText());
                     if (psdByte > 10000000) {
-                        JOptionPane.showMessageDialog(jpanel,"长度过长，可能生成速度较慢","提示",2);
+                        JOptionPane.showMessageDialog(jpanel,"长度过长，可能生成速度较慢","提示", JOptionPane.WARNING_MESSAGE);
                     }
                     StringBuilder newPsdNum = new StringBuilder(psdByte);
                     for (int i = 0; i < psdByte; i ++) {
@@ -350,7 +351,7 @@ public class myTools extends JFrame {
                 }
             }
             catch (NumberFormatException error) {
-                JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告",2);
+                JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
