@@ -5,20 +5,19 @@ import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Random;
 
 public class myTools extends JFrame {
-    private JButton jButton1, jButton2, jButtonBase64En, jButtonBase64De, jButtonMD5, jButtonUrlEn, jButtonUrlDe,
-            jButtonFileMD5;
     private JPanel jpanel;
     private JTextField jText1, jText2;
-    private JLabel jLabelIn, jLabelOut;
-    String iconPath = "C:\\Users\\bjw98\\OneDrive\\My_java\\myTools\\res\\Tools.png";
+    String iconPath = "src/res/Tools.png";
 
     public myTools() {
         Font myFont=new Font("微软雅黑",Font.BOLD,13);
@@ -29,24 +28,27 @@ public class myTools extends JFrame {
 
         ImageIcon softwareIcon = new ImageIcon(iconPath);
 
-        jLabelIn = new JLabel("输入:");
-        jLabelOut = new JLabel("输出:");
+        JLabel jLabelIn = new JLabel("输入:");
+        JLabel jLabelOut = new JLabel("输出:");
 
         jText1 = new JTextField("", 65);
         jText2 = new JTextField("", 65);
 
-        jButton1 = new JButton("时间戳(ms)");
-        jButton2 = new JButton("时间戳(s)");
+        JButton jButtonRandomKeyNum = new JButton("随机密钥(数字)");
+        JButton jButtonRandomKeyWord = new JButton("随机密钥(混合)");
 
-        jButtonBase64En = new JButton("base64加密");
-        jButtonBase64De = new JButton("base64解密");
+        JButton jButton1 = new JButton("时间戳(ms)");
+        JButton jButton2 = new JButton("时间戳(s)");
 
-        jButtonMD5 = new JButton("MD5");
+        JButton jButtonBase64En = new JButton("base64加密");
+        JButton jButtonBase64De = new JButton("base64解密");
 
-        jButtonUrlEn = new JButton("url编码");
-        jButtonUrlDe = new JButton("url解码");
+        JButton jButtonMD5 = new JButton("MD5");
 
-        jButtonFileMD5 = new JButton("文件MD5计算");
+        JButton jButtonUrlEn = new JButton("url编码");
+        JButton jButtonUrlDe = new JButton("url解码");
+
+        JButton jButtonFileMD5 = new JButton("文件MD5计算");
 
         jButton1.addActionListener(new actionTimeStampMs());
         jButton2.addActionListener(new actionTimeStampS());
@@ -61,6 +63,9 @@ public class myTools extends JFrame {
 
         jButtonFileMD5.addActionListener(new actionFileMD5());
 
+        jButtonRandomKeyNum.addActionListener(new actionRandomKeyNum());
+        jButtonRandomKeyWord.addActionListener(new actionRandomKeyWord());
+
         //统一设置字体
         jLabelOut.setFont(myFont);
         jLabelIn.setFont(myFont);
@@ -74,6 +79,8 @@ public class myTools extends JFrame {
         jButtonBase64En.setFont(myFont);
         jButtonMD5.setFont(myFont);
         jButtonFileMD5.setFont(myFont);
+        jButtonRandomKeyNum.setFont(myFont);
+        jButtonRandomKeyWord.setFont(myFont);
 
         jpanel.add(jLabelIn);
         jpanel.add(jText1);
@@ -93,6 +100,9 @@ public class myTools extends JFrame {
         jpanel.add(jButtonUrlDe);
 
         jpanel.add(jButtonFileMD5);
+
+        jpanel.add(jButtonRandomKeyNum);
+        jpanel.add(jButtonRandomKeyWord);
 
         setTitle("小工具合集_by_imBobby");
         setSize(950, 400);
@@ -165,8 +175,14 @@ public class myTools extends JFrame {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告",2);
             }
             else {
-                byte[] base64decodedBytes = Base64.getDecoder().decode(jText1.getText());
-                jText2.setText(new String(base64decodedBytes));
+                try {
+                    byte[] base64decodedBytes = Base64.getDecoder().decode(jText1.getText());
+                    jText2.setText(new String(base64decodedBytes));
+                }
+                catch (IllegalArgumentException error) {
+                    JOptionPane.showMessageDialog(jpanel,"输入了不合法的字符串","解码失败",2);
+                }
+
             }
         }
     }
@@ -209,7 +225,7 @@ public class myTools extends JFrame {
                 try {
                     url = URLEncoder.encode(url, "utf-8");
                 } catch (UnsupportedEncodingException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(jpanel,"编码失败","警告",2);
                 }
                 jText2.setText(url);
             }
@@ -227,7 +243,11 @@ public class myTools extends JFrame {
                 try {
                     jText2.setText(URLDecoder.decode(url_encode, "UTF-8"));
                 } catch (UnsupportedEncodingException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(jpanel,"解码失败","警告",2);
+                    jText2.setText("");
+                } catch (IllegalArgumentException error) {
+                    JOptionPane.showMessageDialog(jpanel,"解码失败(非法输入)","警告",2);
+                    jText2.setText("");
                 }
             }
         }
@@ -270,6 +290,71 @@ public class myTools extends JFrame {
             }).start();
         }
     }
+
+    class actionRandomKeyNum implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String inputLength = jText1.getText();
+                Random random = new Random();
+                if (inputLength.equals("")) {
+                    StringBuilder newPsdNum = new StringBuilder(10);
+                    for (int i = 0; i < 10; i ++) {
+                        newPsdNum.append(random.nextInt(10));
+                    }
+                    jText2.setText(newPsdNum.toString());
+                }
+                else {
+                    int psdByte = Integer.parseInt(jText1.getText());
+                    if (psdByte > 10000000) {
+                        JOptionPane.showMessageDialog(jpanel,"长度过长，可能生成速度较慢","提示",2);
+                    }
+                    StringBuilder newPsdNum = new StringBuilder(psdByte);
+                    for (int i = 0; i < psdByte; i ++) {
+                        newPsdNum.append(random.nextInt(10));
+                    }
+                    jText2.setText(newPsdNum.toString());
+                }
+            }
+            catch (NumberFormatException error) {
+                JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告",2);
+            }
+
+        }
+    }
+
+    class actionRandomKeyWord implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String keyAllWord = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!@#$%^&*()_=+";
+                String inputLength = jText1.getText();
+                Random random = new Random();
+                if (inputLength.equals("")) {
+                    StringBuilder newPsdNum = new StringBuilder(32);
+                    for (int i = 0; i < 32; i ++) {
+                        newPsdNum.append(keyAllWord.charAt(random.nextInt(75)));
+                    }
+                    jText2.setText(newPsdNum.toString());
+                }
+                else {
+                    int psdByte = Integer.parseInt(jText1.getText());
+                    if (psdByte > 10000000) {
+                        JOptionPane.showMessageDialog(jpanel,"长度过长，可能生成速度较慢","提示",2);
+                    }
+                    StringBuilder newPsdNum = new StringBuilder(psdByte);
+                    for (int i = 0; i < psdByte; i ++) {
+                        newPsdNum.append(keyAllWord.charAt(random.nextInt(75)));
+                    }
+                    jText2.setText(newPsdNum.toString());
+                }
+            }
+            catch (NumberFormatException error) {
+                JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告",2);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         new myTools();
     }
