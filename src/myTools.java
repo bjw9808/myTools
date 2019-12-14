@@ -1,6 +1,5 @@
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -13,6 +12,8 @@ import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Random;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
 
 public class myTools extends JFrame {
     private JPanel jpanel;
@@ -50,6 +51,10 @@ public class myTools extends JFrame {
 
         JButton jButtonFileMD5 = new JButton("文件MD5计算");
 
+        JButton jButtonFileCRC32 = new JButton("文件CRC32计算");
+
+        jButtonFileCRC32.addActionListener(new actionFileCRC32());
+
         jButton1.addActionListener(new actionTimeStampMs());
         jButton2.addActionListener(new actionTimeStampS());
 
@@ -81,6 +86,7 @@ public class myTools extends JFrame {
         jButtonFileMD5.setFont(myFont);
         jButtonRandomKeyNum.setFont(myFont);
         jButtonRandomKeyWord.setFont(myFont);
+        jButtonFileCRC32.setFont(myFont);
 
         jpanel.add(jLabelIn);
         jpanel.add(jText1);
@@ -103,6 +109,8 @@ public class myTools extends JFrame {
 
         jpanel.add(jButtonRandomKeyNum);
         jpanel.add(jButtonRandomKeyWord);
+
+        jpanel.add(jButtonFileCRC32);
 
         setTitle("小工具合集_by_imBobby");
         setSize(950, 400);
@@ -353,6 +361,37 @@ public class myTools extends JFrame {
             catch (NumberFormatException error) {
                 JOptionPane.showMessageDialog(jpanel,"密钥长度输入错误","警告", JOptionPane.WARNING_MESSAGE);
             }
+        }
+    }
+
+    class actionFileCRC32 implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new Thread(() -> {
+                JFileChooser jFileChoose = new JFileChooser("C:\\");
+                int fileChooseResult = jFileChoose.showOpenDialog(null);
+                if(fileChooseResult == JFileChooser.APPROVE_OPTION) {
+                    String fileName = jFileChoose.getSelectedFile().toString();
+                    CRC32 crc32 = new CRC32();
+                    FileInputStream fileinputstream = null;
+                    try {
+                        fileinputstream = new FileInputStream(new File(fileName));
+                        CheckedInputStream checkedinputstream = new CheckedInputStream(fileinputstream, crc32);
+                        while (checkedinputstream.read() != -1) {
+                        }
+                        checkedinputstream.close();
+                        String hexString = Long.toHexString(crc32.getValue());
+                        jText2.setText(hexString);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(jpanel,"CRC32","警告", JOptionPane.WARNING_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(jpanel,"文件CRC32计算出错","警告", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
+                    JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告", JOptionPane.WARNING_MESSAGE);
+                }
+            }).start();
         }
     }
 
