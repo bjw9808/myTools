@@ -53,6 +53,9 @@ public class myTools extends JFrame {
 
         JButton jButtonFileCRC32 = new JButton("文件CRC32计算");
 
+        JButton jButtonTenToBin = new JButton("10进制转2进制");
+        JButton jButtonTenToHex = new JButton("10进制转16进制");
+
         jButtonFileCRC32.addActionListener(new actionFileCRC32());
 
         jButton1.addActionListener(new actionTimeStampMs());
@@ -71,6 +74,9 @@ public class myTools extends JFrame {
         jButtonRandomKeyNum.addActionListener(new actionRandomKeyNum());
         jButtonRandomKeyWord.addActionListener(new actionRandomKeyWord());
 
+        jButtonTenToBin.addActionListener(new actionTenToBin());
+        jButtonTenToHex.addActionListener(new actionTenToHex());
+
         //统一设置字体
         jLabelOut.setFont(myFont);
         jLabelIn.setFont(myFont);
@@ -87,6 +93,8 @@ public class myTools extends JFrame {
         jButtonRandomKeyNum.setFont(myFont);
         jButtonRandomKeyWord.setFont(myFont);
         jButtonFileCRC32.setFont(myFont);
+        jButtonTenToBin.setFont(myFont);
+        jButtonTenToHex.setFont(myFont);
 
         jpanel.add(jLabelIn);
         jpanel.add(jText1);
@@ -111,6 +119,9 @@ public class myTools extends JFrame {
         jpanel.add(jButtonRandomKeyWord);
 
         jpanel.add(jButtonFileCRC32);
+
+        jpanel.add(jButtonTenToBin);
+        jpanel.add(jButtonTenToHex);
 
         setTitle("小工具合集_by_imBobby");
         setSize(950, 400);
@@ -300,6 +311,15 @@ public class myTools extends JFrame {
         }
     }
 
+    class actionTenToBin implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String x = jText1.getText();
+            int binString = Integer.parseInt(x);
+            jText2.setText(Integer.toBinaryString(binString));
+        }
+    }
+
     class actionRandomKeyNum implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -392,6 +412,15 @@ public class myTools extends JFrame {
                     JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告", JOptionPane.WARNING_MESSAGE);
                 }
             }).start();
+        }
+    }
+
+    class actionTenToHex implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String x = jText1.getText();
+            int hexString = Integer.parseInt(x);
+            jText2.setText(Integer.toHexString(hexString));
         }
     }
 
