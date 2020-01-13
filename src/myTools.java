@@ -314,9 +314,8 @@ public class myTools extends JFrame {
     class actionTenToBin implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String x = jText1.getText();
-            int binString = Integer.parseInt(x);
-            jText2.setText(Integer.toBinaryString(binString));
+            BigInteger bigInteger = new BigInteger(jText1.getText());
+            jText2.setText(bigInteger.toString(2));
         }
     }
 
@@ -418,9 +417,8 @@ public class myTools extends JFrame {
     class actionTenToHex implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String x = jText1.getText();
-            int hexString = Integer.parseInt(x);
-            jText2.setText(Integer.toHexString(hexString));
+            BigInteger bigInteger = new BigInteger(jText1.getText());
+            jText2.setText(bigInteger.toString(16));
         }
     }
 
