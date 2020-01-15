@@ -56,6 +56,8 @@ public class myTools extends JFrame {
         JButton jButtonTenToBin = new JButton("10进制转2进制");
         JButton jButtonTenToHex = new JButton("10进制转16进制");
 
+        JButton jButtonBinToTen = new JButton("10进制转2进制");
+
         jButtonFileCRC32.addActionListener(new actionFileCRC32());
 
         jButton1.addActionListener(new actionTimeStampMs());
@@ -76,6 +78,7 @@ public class myTools extends JFrame {
 
         jButtonTenToBin.addActionListener(new actionTenToBin());
         jButtonTenToHex.addActionListener(new actionTenToHex());
+        jButtonBinToTen.addActionListener(new actionBinToTen());
 
         //统一设置字体
         jLabelOut.setFont(myFont);
@@ -95,6 +98,7 @@ public class myTools extends JFrame {
         jButtonFileCRC32.setFont(myFont);
         jButtonTenToBin.setFont(myFont);
         jButtonTenToHex.setFont(myFont);
+        jButtonBinToTen.setFont(myFont);
 
         jpanel.add(jLabelIn);
         jpanel.add(jText1);
@@ -122,6 +126,7 @@ public class myTools extends JFrame {
 
         jpanel.add(jButtonTenToBin);
         jpanel.add(jButtonTenToHex);
+        jpanel.add(jButtonBinToTen);
 
         setTitle("小工具合集_by_imBobby");
         setSize(950, 400);
@@ -314,7 +319,7 @@ public class myTools extends JFrame {
     class actionTenToBin implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            BigInteger bigInteger = new BigInteger(jText1.getText());
+            BigInteger bigInteger = new BigInteger(jText1.getText().trim());
             jText2.setText(bigInteger.toString(2));
         }
     }
@@ -417,8 +422,16 @@ public class myTools extends JFrame {
     class actionTenToHex implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            BigInteger bigInteger = new BigInteger(jText1.getText());
+            BigInteger bigInteger = new BigInteger(jText1.getText().trim());
             jText2.setText(bigInteger.toString(16));
+        }
+    }
+
+    class actionBinToTen implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            BigInteger bigInteger = new BigInteger(jText1.getText().trim(), 2);
+            jText2.setText(bigInteger.toString(10));
         }
     }
 
