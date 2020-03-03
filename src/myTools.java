@@ -281,9 +281,13 @@ public class myTools extends JFrame {
     class actionFileMD5 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            CalculateFile calculateFile = new CalculateFile();
-            Thread thread = new Thread(calculateFile);
-            thread.start();
+            try {
+                CalculateFile calculateFile = new CalculateFile();
+                Thread thread = new Thread(calculateFile);
+                thread.start();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
 
         class CalculateFile implements Runnable {
@@ -398,7 +402,18 @@ public class myTools extends JFrame {
     class actionFileCRC32 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new Thread(() -> {
+            try {
+                Crc32Cal crc32Cal = new Crc32Cal();
+                Thread thread = new Thread(crc32Cal);
+                thread.start();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        class Crc32Cal implements Runnable {
+            @Override
+            public void run() {
                 JFileChooser jFileChoose = new JFileChooser("C:\\");
                 int fileChooseResult = jFileChoose.showOpenDialog(null);
                 if(fileChooseResult == JFileChooser.APPROVE_OPTION) {
@@ -422,7 +437,7 @@ public class myTools extends JFrame {
                 else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
                     JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告", JOptionPane.WARNING_MESSAGE);
                 }
-            }).start();
+            }
         }
     }
 
