@@ -56,7 +56,7 @@ public class myTools extends JFrame {
         JButton jButtonTenToBin = new JButton("10进制转2进制");
         JButton jButtonTenToHex = new JButton("10进制转16进制");
 
-        JButton jButtonBinToTen = new JButton("10进制转2进制");
+        JButton jButtonBinToTen = new JButton("2进制转10进制");
 
         jButtonFileCRC32.addActionListener(new actionFileCRC32());
 
@@ -281,7 +281,14 @@ public class myTools extends JFrame {
     class actionFileMD5 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new Thread(() -> {
+            CalculateFile calculateFile = new CalculateFile();
+            Thread thread = new Thread(calculateFile);
+            thread.start();
+        }
+
+        class CalculateFile implements Runnable {
+            @Override
+            public void run() {
                 JFileChooser jFileChoose = new JFileChooser("C:\\");
                 int fileChooseResult = jFileChoose.showOpenDialog(null);
                 if(fileChooseResult == JFileChooser.APPROVE_OPTION)
@@ -312,7 +319,7 @@ public class myTools extends JFrame {
                 else if (fileChooseResult == JFileChooser.ERROR_OPTION) {
                     JOptionPane.showMessageDialog(jpanel,"文件读取错误","警告", JOptionPane.WARNING_MESSAGE);
                 }
-            }).start();
+            }
         }
     }
 
