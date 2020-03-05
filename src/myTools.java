@@ -4,25 +4,30 @@ import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
-import java.util.Arrays;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Random;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
+import java.time.*;
 
 public class myTools extends JFrame {
+
     private JPanel jpanel;
     private JTextField jText1, jText2;
     String iconPath = "src/res/Tools.png";
 
-    public myTools() {
+    public myTools() throws Exception{
+        setResizable(false);//设置窗口禁止缩放
+        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+
         Font myFont=new Font("微软雅黑",Font.BOLD,13);
-        //JPanel init
+
         jpanel = new JPanel();
         jpanel.setLayout(new FlowLayout(FlowLayout.LEADING, 20, 5));
         add(jpanel);
@@ -139,6 +144,11 @@ public class myTools extends JFrame {
     class actionTimeStampMs implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             if (jText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -160,6 +170,11 @@ public class myTools extends JFrame {
     class actionTimeStampS implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             if (jText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -181,6 +196,13 @@ public class myTools extends JFrame {
     class actionBase64Encode implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             if (jText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -195,6 +217,13 @@ public class myTools extends JFrame {
     class actionBase64Decode implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             if (jText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -215,6 +244,13 @@ public class myTools extends JFrame {
     class actionMD5encode implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             String encodeText = jText1.getText();
             try{
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -242,6 +278,13 @@ public class myTools extends JFrame {
 
     class actionURLEncode implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             if (jText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -260,6 +303,13 @@ public class myTools extends JFrame {
     class actionURLDecode implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             if (jText1.getText().equals("")) {
                 JOptionPane.showMessageDialog(jpanel,"输入禁止为空","警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -281,6 +331,13 @@ public class myTools extends JFrame {
     class actionFileMD5 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             try {
                 CalculateFile calculateFile = new CalculateFile();
                 Thread thread = new Thread(calculateFile);
@@ -330,14 +387,38 @@ public class myTools extends JFrame {
     class actionTenToBin implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            BigInteger bigInteger = new BigInteger(jText1.getText().trim());
-            jText2.setText(bigInteger.toString(2));
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            try {
+                BigInteger bigInteger = new BigInteger(jText1.getText().trim());
+                jText2.setText(bigInteger.toString(2));
+            }
+            catch (Exception ee) {
+                try {
+                    MyLog.myLog("方法" + this.getClass().getName() + "执行出错，错误信息如下：");
+                    MyLog.myLog(ee.toString());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
     class actionRandomKeyNum implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             try {
                 String inputLength = jText1.getText();
                 Random random = new Random();
@@ -370,6 +451,13 @@ public class myTools extends JFrame {
     class actionRandomKeyWord implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             try {
                 String keyAllWord = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789!@#$%^&*()_=+";
                 String inputLength = jText1.getText();
@@ -402,6 +490,13 @@ public class myTools extends JFrame {
     class actionFileCRC32 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             try {
                 Crc32Cal crc32Cal = new Crc32Cal();
                 Thread thread = new Thread(crc32Cal);
@@ -444,20 +539,68 @@ public class myTools extends JFrame {
     class actionTenToHex implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            BigInteger bigInteger = new BigInteger(jText1.getText().trim());
-            jText2.setText(bigInteger.toString(16));
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            try {
+                BigInteger bigInteger = new BigInteger(jText1.getText().trim());
+                jText2.setText(bigInteger.toString(16));
+            }
+            catch (Exception ee) {
+                try {
+                    MyLog.myLog("方法" + this.getClass().getName() + "执行出错，错误信息如下：");
+                    MyLog.myLog(ee.toString());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
     class actionBinToTen implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            BigInteger bigInteger = new BigInteger(jText1.getText().trim(), 2);
-            jText2.setText(bigInteger.toString(10));
+
+            try {
+                MyLog.myLog("点击" + this.getClass().getName() + "按钮");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            try {
+                BigInteger bigInteger = new BigInteger(jText1.getText().trim(), 2);
+                jText2.setText(bigInteger.toString(10));
+            }
+            catch (Exception e1) {
+                try {
+                    MyLog.myLog("方法" + this.getClass().getName() + "执行出错，错误信息如下：");
+                    MyLog.myLog(e1.toString());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
+        MyLog.myLog("开始运行");
         new myTools();
+        MyLog.myLog("程序退出");
+    }
+}
+
+class MyLog {
+    public static void myLog(String log) throws Exception{
+        String logPath = "log.log";
+        FileWriter fileWriter = new FileWriter(logPath, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        bufferedWriter.write(LocalDateTime.now() + " " + log + "\n");
+        bufferedWriter.flush();
+        bufferedWriter.close();
     }
 }
