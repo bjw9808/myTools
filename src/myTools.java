@@ -10,7 +10,6 @@ import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Random;
