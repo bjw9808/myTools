@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -49,6 +51,8 @@ public class myTools extends JFrame {
         JButton jButtonBase64En = new JButton("base64加密");
         JButton jButtonBase64De = new JButton("base64解密");
 
+        JButton jButtonNetTest = new JButton("网络状态测试");
+
         JButton jButtonMD5 = new JButton("MD5");
 
         JButton jButtonUrlEn = new JButton("url编码");
@@ -85,6 +89,8 @@ public class myTools extends JFrame {
         jButtonTenToHex.addActionListener(new actionTenToHex());
         jButtonBinToTen.addActionListener(new actionBinToTen());
 
+        jButtonNetTest.addActionListener(new actionNetTest());
+
         //统一设置字体
         jLabelOut.setFont(myFont);
         jLabelIn.setFont(myFont);
@@ -104,6 +110,7 @@ public class myTools extends JFrame {
         jButtonTenToBin.setFont(myFont);
         jButtonTenToHex.setFont(myFont);
         jButtonBinToTen.setFont(myFont);
+        jButtonNetTest.setFont(myFont);
 
         jpanel.add(jLabelIn);
         jpanel.add(jText1);
@@ -132,6 +139,8 @@ public class myTools extends JFrame {
         jpanel.add(jButtonTenToBin);
         jpanel.add(jButtonTenToHex);
         jpanel.add(jButtonBinToTen);
+
+        jpanel.add(jButtonNetTest);
 
         setTitle("小工具合集_by_imBobby");
         setSize(950, 400);
@@ -584,6 +593,39 @@ public class myTools extends JFrame {
                 }
             }
 
+        }
+    }
+
+    class actionNetTest implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Thread t = new Thread(new actionNetTestThread());
+            t.start();
+        }
+
+        class actionNetTestThread implements Runnable {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("https://" + jText1.getText());
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setUseCaches(false);
+                    conn.setConnectTimeout(5000);
+                    conn.setRequestProperty("Accept", "*/*");
+                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 11; Windows NT 5.1)");
+                    conn.connect();
+                    jText2.setText("response code is " + conn.getResponseCode());
+                }
+                catch (Exception exception) {
+                    try {
+                        MyLog.myLog("方法" + this.getClass().getName() + "执行出错，错误信息如下：");
+                        MyLog.myLog(exception.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
