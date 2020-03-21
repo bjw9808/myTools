@@ -1,10 +1,10 @@
 import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.net.*;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -606,15 +606,12 @@ public class myTools extends JFrame {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("https://" + jText1.getText());
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setUseCaches(false);
-                    conn.setConnectTimeout(5000);
-                    conn.setRequestProperty("Accept", "*/*");
-                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 11; Windows NT 5.1)");
-                    conn.connect();
-                    jText2.setText("response code is " + conn.getResponseCode());
+                    jText1.setText("start test your internet");
+                    String url = "https://baidu.com";
+                    HttpClient httpClient = HttpClient.newBuilder().build();
+                    HttpRequest request = HttpRequest.newBuilder(new URI(url)).timeout(Duration.ofSeconds(5)).build();
+                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                    jText2.setText("response code is " + response.statusCode());
                 }
                 catch (Exception exception) {
                     try {
